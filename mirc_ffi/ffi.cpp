@@ -82,6 +82,7 @@ void ffiCall::call(vector<string> args)
 		convertArgument(*it, *(*ait));
 	}
 
+	// TODO support cdecl calling convention
 	ull *stackptr, dwords = stackOffset/sizeof(ull);
 	__asm { 
 		sub esp, [stackOffset] 
