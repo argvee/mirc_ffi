@@ -76,6 +76,10 @@ ffiCall::~ffiCall()
 
 void ffiCall::call(vector<string> args)
 {
+	if (function.funcPtr == NULL) {
+		returnValue = 0;
+		return;
+	}
 	vector<string>::iterator it = args.begin();
 	vector<ffiArgument*>::iterator ait = function.arguments.begin();
 	for (; ait != function.arguments.end(); it++, ait++) {
