@@ -107,23 +107,7 @@ void ffiCall::convertArgument(string& sData, ffiArgument& argument)
 	const char *data = sData.c_str();
 	char *ptrStorage = NULL;
 	istringstream in(data, istringstream::in);
-	if (argument.isInteger()) { 
-		if (argument.isSigned()) {
-			SCAN_NUMERIC(int);
-		}
-		else { 
-			SCAN_NUMERIC(unsigned int); 
-		}
-	}
-	else if (argument.isDecimal()) { 
-		if (argument.size() == sizeof(double)) {
-			SCAN_DECIMAL(double);
-		}
-		else {
-			SCAN_DECIMAL(float);
-		}
-	}
-	else if (argument.isPointer()) { 
+	if (argument.isPointer()) { 
 		unsigned int bytes = argument.size(true);
 		if (argument.isChar() && sData.length() > bytes) {
 			ptrStorage = new char[sData.length() + 1];
@@ -140,8 +124,26 @@ void ffiCall::convertArgument(string& sData, ffiArgument& argument)
 		storage.push_back(ptrStorage);
 		memcpy(stackData + stackOffset, &ptrStorage, sizeof(char *));
 	}
-	else if (argument.isChar()) { 
-		SCAN(int, "%c");
+	else {
+		if (argument.isInteger()) { 
+			if (argument.isSigned()) {
+				SCAN_NUMERIC(int);
+			}
+			else { 
+				SCAN_NUMERIC(unsigned int); 
+			}
+		}
+		else if (argument.isDecimal()) { 
+			if (argument.size() == sizeof(double)) {
+				SCAN_DECIMAL(double);
+			}
+			else {
+				SCAN_DECIMAL(float);
+			}
+		}
+		else if (argument.isChar()) { 
+			SCAN(int, "%c");
+		}
 	}
 
 	if (argument.isCapture()) {
