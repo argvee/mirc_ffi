@@ -83,7 +83,17 @@ MFUNCTION(fficall)
 			int offset = 0;
 			for (int i = 0; ait != func.arguments.end(); ait++, i++) {
 				string strArgument;
-				in >> strArgument;
+				in >> ws;
+				int chr = in.peek();
+				if (chr == '"') {
+					char buf[4096];
+					in.get();
+					in.getline(buf, 4096, '"');
+					strArgument.assign(buf, (size_t)in.gcount());
+				}
+				else {
+					in >> strArgument;
+				}
 				strArguments.push_back(strArgument);
 			}
 			lastCall->call(strArguments);
