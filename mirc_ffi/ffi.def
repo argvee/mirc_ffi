@@ -1,0 +1,11 @@
+LIBRARY ffi
+EXPORTS
+	ffiopen
+	fficlose
+	ffilist
+	fficreate
+	ffistruct
+	fficall
+	fficapture
+	LoadDll
+	UnloadDll
