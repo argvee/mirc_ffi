@@ -122,7 +122,10 @@ MFUNCTION(fficapture)
 }
 
 typedef struct {
-	DWORD  mVersion;
+	union {
+		struct { short major; short minor; };
+		DWORD  value;
+	} mVersion;
 	HWND   mHwnd;
 	BOOL   mKeep;
 	BOOL   mUnicode;
